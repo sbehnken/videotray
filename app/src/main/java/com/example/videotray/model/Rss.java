@@ -45,9 +45,14 @@ public class Rss {
         @ElementList(inline = true, entry = "item")
         private List<Item> itemList;
 
+        public List<Item> getItemList() {
+            return itemList;
+        }
+
+
 
         @Root(strict = false)
-        private static class Item {
+        public static class Item {
 //            private String mediaContent;
 //
 //            private String getMediaContent() {

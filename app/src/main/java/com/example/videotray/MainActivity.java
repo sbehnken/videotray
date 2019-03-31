@@ -18,7 +18,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-//    VideoListAdapter mAdapter;
+    VideoListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +27,12 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
 
-//        mAdapter = new VideoListAdapter();
+        mAdapter = new VideoListAdapter();
 
 
-//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-//        recyclerView.setLayoutManager(layoutManager);
-//        recyclerView.setAdapter(mAdapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(mAdapter);
 
 //        Picasso.with(context) .load(url) .placeholder(R.drawable.user_placeholder) .error(R.drawable.user_placeholder_error) .into(imageView);
 //        Picasso.with(view.getContext()).load(mRestaurant.getImageUrl()).into(mImageLabel);
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Rss> call, Response<Rss> response) {
                 if(response.body() != null) {
-//                    mAdapter.setChannelItems(response.body().getChannel().getItemList());
+                    mAdapter.setChannelItems(response.body().getChannel().getItemList());
                 }
                 Log.e("Response success", response.message());
             }
