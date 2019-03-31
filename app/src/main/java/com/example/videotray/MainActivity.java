@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.videotray.model.Rss;
 import com.example.videotray.services.ApiService;
@@ -28,14 +29,19 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
 
         mAdapter = new VideoListAdapter();
+        mAdapter.setContext(this);
 
+        mAdapter.setVideoClickListener(new VideoListAdapter.VideoClickListener() {
+            @Override
+            public void onVideoClicked(Rss.Channel.Item item) {
+                //handle playing video
+                Toast.makeText(getApplicationContext(), "video clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
-
-//        Picasso.with(context) .load(url) .placeholder(R.drawable.user_placeholder) .error(R.drawable.user_placeholder_error) .into(imageView);
-//        Picasso.with(view.getContext()).load(mRestaurant.getImageUrl()).into(mImageLabel);
 
         ApiService apiService = new ApiService();
         apiService.getResponse().enqueue(new Callback<Rss>() {

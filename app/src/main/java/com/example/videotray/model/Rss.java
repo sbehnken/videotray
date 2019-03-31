@@ -60,8 +60,6 @@ public class Rss {
                 return title;
             }
 
-            //todo: from here not working. comment out if need to get working again.
-
             @Element(name = "content")
             @Namespace(prefix = "media")
             private MediaContent mediaContent;
@@ -73,22 +71,37 @@ public class Rss {
             @Root(strict = false)
             public static class MediaContent {
 
-//                @Attribute
-//                private double duration;
-//
-//                private double getDuration() {
-//                    return duration;
-//                }
-//            }
+                @Element(name = "thumbnail")
+                @Namespace(prefix = "media")
+                private MediaThumbnail mediaThumbnail;
 
-//            @Root(strict = false)
-//            private static class mediaDescription {
-//                @Attribute
-//                private Image thumbnail;
-//
-//                private Image getThumbnail() {
-//                    return thumbnail;
-//                }
+                public MediaThumbnail getMediaThumbnail() {
+                    return mediaThumbnail;
+                }
+
+                @Attribute
+                private double duration;
+
+                public double getDuration() {
+                    return duration;
+                }
+
+                @Attribute
+                private String url;
+
+                public String getUrl() {
+                    return url;
+                }
+
+                @Root(strict = false)
+                public static class MediaThumbnail {
+                    @Attribute
+                    private String url;
+
+                    public String getUrl() {
+                        return url;
+                    }
+                }
             }
         }
     }

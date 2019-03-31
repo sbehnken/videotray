@@ -1,5 +1,6 @@
 package com.example.videotray;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +16,8 @@ import java.util.List;
 
 public class VideoListAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     private List<Rss.Channel.Item> channelItems = new ArrayList<>();
+    private Context adapterContext;
+    private VideoClickListener videoClickListener;
 
     @NonNull
     @Override
@@ -24,8 +27,13 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VideoViewHolder videoViewHolder, int i) {
-        videoViewHolder.bindData(channelItems.get(i));
+    public void onBindViewHolder(@NonNull final VideoViewHolder videoViewHolder, int i) {
+        videoViewHolder.bindData(channelItems.get(i), adapterContext, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                videoClickListener.onVideoClicked(videoViewHolder.getItem());
+            }
+        });
     }
 
     @Override
@@ -42,5 +50,22 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoViewHolder> {
         channelItems = list;
         notifyDataSetChanged();
     }
+
+    public void setContext(Context context) {
+        adapterContext = context;
+    }
+
+    public void setVideoClickListener(VideoClickListener clickListener) {
+        videoClickListener = clickListener;
+    }
+
+    public interface VideoClickListener {
+        void onVideoClicked(Rss.Channel.Item item);
+    }
+
+    //example of android on click
+//    public interface OnClickListener {
+//        void onClick(View v);
+//    }
 
 }
