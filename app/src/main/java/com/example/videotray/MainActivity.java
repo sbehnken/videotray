@@ -2,42 +2,49 @@ package com.example.videotray;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.example.videotray.model.Rss;
-import com.example.videotray.services.ApiInterface;
 import com.example.videotray.services.ApiService;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Root;
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
-import org.simpleframework.xml.core.ValueRequiredException;
-
-import java.io.IOException;
-import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView txt;
+
+//    VideoListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        txt = findViewById(R.id.txt);
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
 
-//        Serializer serializer = new Persister();
+//        mAdapter = new VideoListAdapter();
+
+
+//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+//        recyclerView.setLayoutManager(layoutManager);
+//        recyclerView.setAdapter(mAdapter);
+
+//        Picasso.with(context) .load(url) .placeholder(R.drawable.user_placeholder) .error(R.drawable.user_placeholder_error) .into(imageView);
+//        Picasso.with(view.getContext()).load(mRestaurant.getImageUrl()).into(mImageLabel);
 
         ApiService apiService = new ApiService();
         apiService.getResponse().enqueue(new Callback<Rss>() {
+
             @Override
             public void onResponse(Call<Rss> call, Response<Rss> response) {
+                if(response.body() != null) {
+//                    mAdapter.setChannelItems(response.body().getChannel().getItemList());
+                }
                 Log.e("Response success", response.message());
             }
 
@@ -47,23 +54,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    public class LineNumberTest {
-
-        @Root
-        public class Type {
-            @Attribute
-            String name;
-        }
-    }
-
-//     try {
-////        apiInterface = retrofit.create(ApiInterface.class);
-//        Call<Rss> call = apiInterface.getRss();
-//        Response<Rss> response = call.execute();
-//        //response.code() == 200
-//        Rss rss = response.body();
-//    } catch (IOException e) {
-//        e.printStackTrace();
-//    }
 }

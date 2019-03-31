@@ -1,6 +1,7 @@
 package com.example.videotray.model;
 
 import android.media.Image;
+
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
@@ -18,70 +19,62 @@ import java.util.List;
 
 @Root(strict = false)
 @NamespaceList({
-    @Namespace(prefix = "media", reference = "http://search.yahoo.com/mrss/"),
-    @Namespace(prefix = "atom", reference = "http://www.w3.org/2005/Atom")})
+        @Namespace(prefix = "media", reference = "http://search.yahoo.com/mrss/"),
+        @Namespace(reference = "http://www.w3.org/2005/Atom", prefix = "atom")})
 public class Rss {
-    @Attribute(name = "xmlns:media")
-    private String xmlns_media;
 
-    @Attribute(name = "xmlns:atom")
-    private String xmlns_atom;
-
-    @Version(revision = 1.1)
+    @Version(revision = 2.0)
     private double version;
 
-    public String getXmlns_media() {
-        return xmlns_media;
-    }
-
-    public String getXmlns_atom() {
-        return xmlns_atom;
-    }
-
-    @ElementList(name = "channel", inline = true)
-    List<Channel> channels = new ArrayList<>();
+    @Element
     private Channel channel;
 
     public Channel getChannel() {
         return channel;
     }
 
-    static class Channel {
-        @Element()
+    @Root(strict = false)
+    public static class Channel {
+        @Element
         private String title;
 
         public String getTitle() {
             return title;
         }
 
-        public class Item {
-            @Element(name = "item")
-            private String mediaContent;
+        @ElementList(inline = true, entry = "item")
+        private List<Item> itemList;
 
-            private String getMediaContent() {
-                return mediaContent;
-            }
 
-            public class mediaConent {
-                @Attribute
-                private double duration;
+        @Root(strict = false)
+        private static class Item {
+//            private String mediaContent;
+//
+//            private String getMediaContent() {
+//                return mediaContent;
+//            }
 
-                private double getDuration() {
-                    return duration;
-                }
-            }
+//            @Root(strict = false)
+//            private static class mediaContent {
+//                @Attribute
+//                private double duration;
+//
+//                private double getDuration() {
+//                    return duration;
+//                }
+//            }
 
-            public class mediaDescription {
-                @Attribute
-                private Image thumbnail;
-
-                private Image getThumbnail() {
-                    return thumbnail;
-                }
-            }
+//            @Root(strict = false)
+//            private static class mediaDescription {
+//                @Attribute
+//                private Image thumbnail;
+//
+//                private Image getThumbnail() {
+//                    return thumbnail;
+//                }
+//            }
         }
     }
-
 }
 
 
