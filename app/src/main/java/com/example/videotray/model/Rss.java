@@ -35,12 +35,13 @@ public class Rss {
 
     @Root(strict = false)
     public static class Channel {
-        @Element
-        private String title;
 
-        public String getTitle() {
-            return title;
-        }
+//        @Element
+//        private String title;
+//
+//        public String getTitle() {
+//            return title;
+//        }
 
         @ElementList(inline = true, entry = "item")
         private List<Item> itemList;
@@ -49,18 +50,29 @@ public class Rss {
             return itemList;
         }
 
-
-
         @Root(strict = false)
         public static class Item {
-//            private String mediaContent;
-//
-//            private String getMediaContent() {
-//                return mediaContent;
-//            }
 
-//            @Root(strict = false)
-//            private static class mediaContent {
+            @Element
+            private String title;
+
+            public String getTitle() {
+                return title;
+            }
+
+            //todo: from here not working. comment out if need to get working again.
+
+            @Element(name = "content")
+            @Namespace(prefix = "media")
+            private MediaContent mediaContent;
+
+            public MediaContent getMediaContent() {
+               return mediaContent;
+            }
+
+            @Root(strict = false)
+            public static class MediaContent {
+
 //                @Attribute
 //                private double duration;
 //
@@ -77,7 +89,7 @@ public class Rss {
 //                private Image getThumbnail() {
 //                    return thumbnail;
 //                }
-//            }
+            }
         }
     }
 }
