@@ -35,7 +35,6 @@ public class VideoViewHolder extends RecyclerView.ViewHolder {
 
         root.setOnClickListener(clickListener);
 
-
         item = video;
 }
 

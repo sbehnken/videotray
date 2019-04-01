@@ -6,13 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import com.example.videotray.model.Rss;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class VideoListAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     private List<Rss.Channel.Item> channelItems = new ArrayList<>();
@@ -62,6 +62,27 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     public interface VideoClickListener {
         void onVideoClicked(Rss.Channel.Item item);
     }
+
+//    public void filter(Double durationItem) {
+//        List<Double> durationItems = new ArrayList<>();
+//
+//        for(int i = 0; i < channelItems.size(); i++) {
+//            durationItems.add(channelItems.get(i).getMediaContent().getDuration());
+//        }
+//
+//    }
+
+//    private Filter mFilter = new Filter() {
+//        @Override
+//        protected FilterResults performFiltering(CharSequence constraint) {
+//            return null;
+//        }
+//
+//        @Override
+//        protected void publishResults(CharSequence constraint, FilterResults results) {
+//
+//        }
+//    };
 
     //example of android on click
 //    public interface OnClickListener {

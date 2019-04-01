@@ -25,14 +25,15 @@ import com.example.videotray.model.Rss;
 import com.example.videotray.services.ApiService;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
 public class MainActivity extends AppCompatActivity  {
-    VideoListAdapter mAdapter;
+    private VideoListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,19 +53,13 @@ public class MainActivity extends AppCompatActivity  {
             FrameLayout frameLayout = findViewById(R.id.video_view_layout);
             @Override
             public void onVideoClicked(Rss.Channel.Item item) {
-                //handle playing video
-                Toast.makeText(getApplicationContext(), "video clicked", Toast.LENGTH_SHORT).show();
-
-                Uri uri = Uri.parse("http://d1nixf144dcz0j.cloudfront.net/shade.mp4");
-
                 videoView.setMediaController(mediaController);
                 videoView.setVideoPath(item.getMediaContent().getUrl());
                 videoView.requestFocus();
                 frameLayout.setVisibility(View.VISIBLE);
                 videoView.start();
             }
-
-                    });
+        });
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -78,6 +73,7 @@ public class MainActivity extends AppCompatActivity  {
                 if (response.body() != null) {
                     mAdapter.setChannelItems(response.body().getChannel().getItemList());
                 }
+
                 Log.e("Response success", response.message());
             }
 
@@ -85,8 +81,19 @@ public class MainActivity extends AppCompatActivity  {
             public void onFailure(Call<Rss> call, Throwable t) {
                 Log.e("Response fail", t.getMessage());
             }
+
         });
+    }
 
+    //understand and remove before sending it in
+    public void durationFilter(List<Rss.Channel.Item> list) {
+        List<Rss.Channel.Item> durationItems = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++) {
 
+            if(list.get(i).getMediaContent().getDuration() == 120.0) {
+                durationItems.add(list.get(i));
+            }
+        }
+        mAdapter.setChannelItems(durationItems);
     }
 }
