@@ -14,16 +14,16 @@ import android.widget.VideoView;
 import com.example.videotray.model.Rss;
 import com.example.videotray.services.ApiService;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
     private VideoListAdapter mAdapter;
-    private FrameLayout  frameLayout;
+    private FrameLayout mFrameLayout;
+    private VideoView mVideoView;
+    private RecyclerView mRecyclerView;
+    private MediaController mMediaController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,34 +31,30 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
 
         final ImageButton mCloseButton = findViewById(R.id.close_button);
+        mMediaController = new MediaController(this);
 
-        final VideoView videoView = findViewById(R.id.video_view);
-
-        final android.widget.MediaController mediaController = new MediaController(this);
-
-        final RecyclerView recyclerView = findViewById(R.id.recycler_view);
-
-        frameLayout = findViewById(R.id.video_view_layout);
+        mRecyclerView = findViewById(R.id.recycler_view);
+        mVideoView = findViewById(R.id.video_view);
+        mFrameLayout = findViewById(R.id.video_view_layout);
 
         mAdapter = new VideoListAdapter();
         mAdapter.setContext(this);
-
         mAdapter.setVideoClickListener(new VideoListAdapter.VideoClickListener() {
-
 
             @Override
             public void onVideoClicked(Rss.Channel.Item item) {
-                videoView.setMediaController(mediaController);
-                videoView.setVideoPath(item.getMediaContent().getUrl());
-                videoView.requestFocus();
-                frameLayout.setVisibility(View.VISIBLE);
-                videoView.start();
+                mVideoView.setMediaController(mMediaController);
+                mVideoView.setVideoPath(item.getMediaContent().getUrl());
+                mVideoView.requestFocus();
+                mFrameLayout.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.INVISIBLE);
+                mVideoView.start();
             }
         });
 
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mAdapter);
 
         ApiService apiService = new ApiService();
         apiService.getResponse().enqueue(new Callback<Rss>() {
@@ -68,7 +64,6 @@ public class MainActivity extends AppCompatActivity  {
                 if (response.body() != null) {
                     mAdapter.setChannelItems(response.body().getChannel().getItemList());
                 }
-
                 Log.e("Response success", response.message());
             }
 
@@ -76,30 +71,24 @@ public class MainActivity extends AppCompatActivity  {
             public void onFailure(Call<Rss> call, Throwable t) {
                 Log.e("Response fail", t.getMessage());
             }
-
         });
 
-         mCloseButton.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 if(mCloseButton != null) {
-                     videoView.stopPlayback();
-                     videoView.setMediaController(null);
-                     frameLayout.setVisibility(View.INVISIBLE);
-                 }
-             }
-         });
+        mCloseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mVideoView.stopPlayback();
+                mVideoView.setMediaController(null);
+                mFrameLayout.setVisibility(View.INVISIBLE);
+                mRecyclerView.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
-    //understand and remove before sending it in
-    public void durationFilter(List<Rss.Channel.Item> list) {
-        List<Rss.Channel.Item> durationItems = new ArrayList<>();
-        for(int i = 0; i < list.size(); i++) {
-
-            if(list.get(i).getMediaContent().getDuration() == 120.0) {
-                durationItems.add(list.get(i));
-            }
-        }
-        mAdapter.setChannelItems(durationItems);
+    @Override
+    public void onBackPressed() {
+        mVideoView.stopPlayback();
+        mVideoView.setMediaController(null);
+        mFrameLayout.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 }

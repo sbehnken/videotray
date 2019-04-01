@@ -6,8 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 
 import com.example.videotray.model.Rss;
 
@@ -41,52 +39,20 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoViewHolder> {
         return channelItems.size();
     }
 
-    public List<Rss.Channel.Item> getChannelItems() {
-        return channelItems;
-    }
-
-    public void setChannelItems(List<Rss.Channel.Item> list) {
-        //call from onResponse in Main Activity with the channel list from the Rss object
+    void setChannelItems(List<Rss.Channel.Item> list) {
         channelItems = list;
         notifyDataSetChanged();
     }
 
-    public void setContext(Context context) {
+    void setContext(Context context) {
         adapterContext = context;
     }
 
-    public void setVideoClickListener(VideoClickListener clickListener) {
+    void setVideoClickListener(VideoClickListener clickListener) {
         videoClickListener = clickListener;
     }
 
     public interface VideoClickListener {
         void onVideoClicked(Rss.Channel.Item item);
     }
-
-//    public void filter(Double durationItem) {
-//        List<Double> durationItems = new ArrayList<>();
-//
-//        for(int i = 0; i < channelItems.size(); i++) {
-//            durationItems.add(channelItems.get(i).getMediaContent().getDuration());
-//        }
-//
-//    }
-
-//    private Filter mFilter = new Filter() {
-//        @Override
-//        protected FilterResults performFiltering(CharSequence constraint) {
-//            return null;
-//        }
-//
-//        @Override
-//        protected void publishResults(CharSequence constraint, FilterResults results) {
-//
-//        }
-//    };
-
-    //example of android on click
-//    public interface OnClickListener {
-//        void onClick(View v);
-//    }
-
 }

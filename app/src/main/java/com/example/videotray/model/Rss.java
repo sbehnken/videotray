@@ -1,6 +1,5 @@
 package com.example.videotray.model;
 
-import android.media.Image;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
@@ -8,18 +7,13 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Namespace;
 import org.simpleframework.xml.NamespaceList;
 import org.simpleframework.xml.Root;
-import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.Version;
-import org.simpleframework.xml.core.Persister;
-import org.simpleframework.xml.core.ValueRequiredException;
 
-import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.List;
 
 @Root(strict = false)
 @NamespaceList({
-        @Namespace(prefix = "media", reference = "http://search.yahoo.com/mrss/"),
+        @Namespace(reference = "http://search.yahoo.com/mrss/", prefix = "media"),
         @Namespace(reference = "http://www.w3.org/2005/Atom", prefix = "atom")})
 public class Rss {
 
@@ -65,7 +59,7 @@ public class Rss {
             private MediaContent mediaContent;
 
             public MediaContent getMediaContent() {
-               return mediaContent;
+                return mediaContent;
             }
 
             @Root(strict = false)
