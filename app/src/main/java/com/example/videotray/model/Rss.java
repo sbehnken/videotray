@@ -74,9 +74,9 @@ public class Rss {
                 }
 
                 @Attribute
-                private double duration;
+                private float duration;
 
-                public double getDuration() {
+                public float getDuration() {
                     return duration;
                 }
 

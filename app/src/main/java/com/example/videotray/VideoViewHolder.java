@@ -30,8 +30,15 @@ public class VideoViewHolder extends RecyclerView.ViewHolder {
     public void bindData(Rss.Channel.Item video, Context context, View.OnClickListener clickListener) {
         Picasso.with(context).load(video.getMediaContent().getMediaThumbnail().getUrl()).placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_background).into(mVideoThumbnail);
 
+
         mVideoTitle.setText(video.getTitle());
-        mVideoDuration.setText(String.valueOf(video.getMediaContent().getDuration()));
+
+        float durationTime = video.getMediaContent().getDuration();
+        float timeFormat =  durationTime / 60;
+        int toMinute;
+        toMinute = (int)timeFormat;
+        String lengthOfTime = context.getResources().getString(R.string.duration_name) + toMinute + ":00";
+        mVideoDuration.setText(lengthOfTime);
 
         root.setOnClickListener(clickListener);
 
