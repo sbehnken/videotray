@@ -1,30 +1,19 @@
 package com.example.videotray;
 
-import android.content.Intent;
-import android.graphics.PixelFormat;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.session.MediaSession;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.MediaController;
-import android.widget.TabHost;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.videotray.model.Rss;
 import com.example.videotray.services.ApiService;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,23 +23,29 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity  {
     private VideoListAdapter mAdapter;
+    private FrameLayout  frameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final ImageButton mCloseButton = findViewById(R.id.close_button);
+
         final VideoView videoView = findViewById(R.id.video_view);
 
         final android.widget.MediaController mediaController = new MediaController(this);
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        final RecyclerView recyclerView = findViewById(R.id.recycler_view);
+
+        frameLayout = findViewById(R.id.video_view_layout);
 
         mAdapter = new VideoListAdapter();
         mAdapter.setContext(this);
 
         mAdapter.setVideoClickListener(new VideoListAdapter.VideoClickListener() {
-            FrameLayout frameLayout = findViewById(R.id.video_view_layout);
+
+
             @Override
             public void onVideoClicked(Rss.Channel.Item item) {
                 videoView.setMediaController(mediaController);
@@ -61,7 +56,7 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
 
@@ -83,6 +78,17 @@ public class MainActivity extends AppCompatActivity  {
             }
 
         });
+
+         mCloseButton.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 if(mCloseButton != null) {
+                     videoView.stopPlayback();
+                     videoView.setMediaController(null);
+                     frameLayout.setVisibility(View.INVISIBLE);
+                 }
+             }
+         });
     }
 
     //understand and remove before sending it in
