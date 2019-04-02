@@ -1,4 +1,4 @@
-# videotray
+# Videotray
 
 This app populates videos from an xml api call. It shows the video thumbnail, title and length of time. When clicked the video pulls up in the default player.
 
