@@ -5,4 +5,5 @@ This app populates a list of videos from an xml api call. It shows the video thu
 ## TODOs
 
 1. Add hamburger icon to toolbar
-2. Fix back button only when media controls show. 
+2. Fix back button only when media controls show
+3. Spiffy up the UI
